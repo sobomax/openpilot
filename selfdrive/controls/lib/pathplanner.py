@@ -1,5 +1,6 @@
 import os
 import math
+from numpy import interp
 from common.realtime import sec_since_boot, DT_MDL
 from selfdrive.swaglog import cloudlog
 from selfdrive.controls.lib.lateral_mpc import libmpc_py
@@ -17,6 +18,9 @@ LOG_MPC = os.environ.get('LOG_MPC', False)
 
 LANE_CHANGE_SPEED_MIN = 45 * CV.MPH_TO_MS
 LANE_CHANGE_TIME_MAX = 10.
+
+sadBP = [0., 5., 10., 25.]
+sadV = [.3, .3, .2, .1]
 
 DESIRES = {
   LaneChangeDirection.none: {
@@ -163,10 +167,16 @@ class PathPlanner():
     if desire == log.PathPlan.Desire.laneChangeRight or desire == log.PathPlan.Desire.laneChangeLeft:
       self.LP.l_prob *= self.lane_change_ll_prob
       self.LP.r_prob *= self.lane_change_ll_prob
+      self.libmpc.init_weights(MPC_COST_LAT.PATH / 3.0, MPC_COST_LAT.LANE, MPC_COST_LAT.HEADING, self.steer_rate_cost)
+    else:
+      self.libmpc.init_weights(MPC_COST_LAT.PATH, MPC_COST_LAT.LANE, MPC_COST_LAT.HEADING, self.steer_rate_cost)
+
     self.LP.update_d_poly(v_ego)
 
+    sad = interp(v_ego, sadBP, sadV)
+
     # account for actuation delay
-    self.cur_state = calc_states_after_delay(self.cur_state, v_ego, angle_steers - angle_offset, curvature_factor, VM.sR, CP.steerActuatorDelay)
+    self.cur_state = calc_states_after_delay(self.cur_state, v_ego, angle_steers - angle_offset, curvature_factor, VM.sR, sad)
 
     v_ego_mpc = max(v_ego, 5.0)  # avoid mpc roughness due to low speed
     self.libmpc.run_mpc(self.cur_state, self.mpc_solution,

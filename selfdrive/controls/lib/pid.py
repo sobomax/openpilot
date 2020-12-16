@@ -1,5 +1,6 @@
 import numpy as np
 from common.numpy_fast import clip, interp
+from common.op_params import opParams
 
 def apply_deadzone(error, deadzone):
   if error > deadzone:
@@ -11,10 +12,11 @@ def apply_deadzone(error, deadzone):
   return error
 
 class PIController():
+  nl_p = 0.0
   def __init__(self, k_p, k_i, k_f=1., pos_limit=None, neg_limit=None, rate=100, sat_limit=0.8, convert=None):
     self._k_p = k_p  # proportional gain
     self._k_i = k_i  # integral gain
-    self.k_f = k_f  # feedforward gain
+    self._k_f = k_f  # feedforward gain
 
     self.pos_limit = pos_limit
     self.neg_limit = neg_limit
@@ -34,6 +36,10 @@ class PIController():
   @property
   def k_i(self):
     return interp(self.speed, self._k_i[0], self._k_i[1])
+
+  @property
+  def k_f(self):
+    return self._k_f
 
   def _check_saturation(self, control, check_saturation, error):
     saturated = (control < self.neg_limit) or (control > self.pos_limit)
@@ -59,7 +65,7 @@ class PIController():
     self.speed = speed
 
     error = float(apply_deadzone(setpoint - measurement, deadzone))
-    self.p = error * self.k_p
+    self.p = error * (self.k_p + self.nl_p)
     self.f = feedforward * self.k_f
 
     if override:
@@ -86,3 +92,21 @@ class PIController():
 
     self.control = clip(control, self.neg_limit, self.pos_limit)
     return self.control
+
+class PIControllerNL(PIController):
+  GainSaS_BP = [0., 3.9, 4., 5., 10., 20., 40.]
+  Gain_g = [0.15, .065, .085, .1, .12, .14, .16]
+  GainV_BP = [0., 20., 20.01, 30.]
+  Gain_V = [0.3, .5, .65, 1.2]
+
+  @property
+  def k_f(self):
+    return interp(self.speed, self._k_f[0], self._k_f[1])
+
+  def update(self, setpoint,  measurement, speed=0.0, **kwargs):
+    if opParams().get('nonlinearsas'):
+      self.nl_p = interp(abs(setpoint), self.GainSaS_BP, self.Gain_g) * interp(speed, self.GainV_BP, self.Gain_V)
+    else:
+      self.nl_p = 0.
+    setpoint = clip(setpoint, -120., 120.)
+    return PIController.update(self, setpoint, measurement, speed, **kwargs)

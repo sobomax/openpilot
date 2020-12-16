@@ -7,10 +7,7 @@ Ecu = car.CarParams.Ecu
 # Steer torque limits
 class SteerLimitParams:
   def __init__(self, CP):
-    if CP.carFingerprint in [CAR.SONATA, CAR.PALISADE, CAR.SANTA_FE, CAR.VELOSTER, CAR.GENESIS_G70]:
-      self.STEER_MAX = 384
-    else:
-      self.STEER_MAX = 255
+    self.STEER_MAX = 384
     self.STEER_DELTA_UP = 3
     self.STEER_DELTA_DOWN = 7
     self.STEER_DRIVER_ALLOWANCE = 50
@@ -316,6 +313,8 @@ FEATURES = {
 
   # these cars use the FCA11 message for the AEB and FCW signals, all others use SCC12
   "use_fca": set([CAR.SONATA, CAR.ELANTRA, CAR.ELANTRA_GT_I30, CAR.KIA_STINGER, CAR.IONIQ, CAR.KONA_EV, CAR.KIA_FORTE, CAR.KIA_NIRO_EV, CAR.PALISADE, CAR.GENESIS_G70, CAR.KONA]),
+
+  "allow_high_steer": set([CAR.KONA, CAR.KONA_EV, CAR.KIA_NIRO_EV]),
 
   "use_bsm": set([CAR.SONATA, CAR.PALISADE, CAR.HYUNDAI_GENESIS, CAR.GENESIS_G70, CAR.GENESIS_G80, CAR.GENESIS_G90, CAR.KONA]),
 }
