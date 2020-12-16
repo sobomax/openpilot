@@ -1,7 +1,8 @@
 # Sobomax's home fork
 
- o Better lattitude PI control has been ported over from xps/xps branch and enabled
-   on all Kia / Hyindai vehicles.
+ o Better lattitude PI control has been ported over to Comma's release2 from
+   [https://github.com/xps-genesis/openpilot] "xps" branch and enabled on all
+   Kia / Hyindai vehicles.
 
 ## Original OpenPilot Readme follows
 
