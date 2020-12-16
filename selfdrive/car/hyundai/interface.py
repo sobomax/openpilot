@@ -28,14 +28,15 @@ class CarInterface(CarInterfaceBase):
     ret.steerLimitTimer = 0.1
     tire_stiffness_factor = 0.7
 
-    ret.lateralTuning.pid.kpBP = [0., 10., 30.]
-    ret.lateralTuning.pid.kpV = [0.01, 0.02, 0.03]
-    ret.lateralTuning.pid.kiBP = [0., 10., 30.]
-    ret.lateralTuning.pid.kiV = [0.001, 0.0015, 0.002]
-    ret.lateralTuning.pid.kfBP = [0., 10., 30.]
-    ret.lateralTuning.pid.kfV = [0.000015, 0.00002, 0.000025]
-
-    if opParams().get('Enable_INDI'):
+    if not opParams().get('Enable_INDI'):
+      ret.lateralTuning.init('pidnl')
+      ret.lateralTuning.pidnl.kpBP = [0., 10., 30.]
+      ret.lateralTuning.pidnl.kpV = [0.01, 0.02, 0.03]
+      ret.lateralTuning.pidnl.kiBP = [0., 10., 30.]
+      ret.lateralTuning.pidnl.kiV = [0.001, 0.0015, 0.002]
+      ret.lateralTuning.pidnl.kfBP = [0., 10., 30.]
+      ret.lateralTuning.pidnl.kfV = [0.000015, 0.00002, 0.000025]
+    else:
       ret.lateralTuning.init('indi')
       ret.lateralTuning.indi.outerLoopGain = 3.  # stock is 2.0.  Trying out 2.5
       ret.lateralTuning.indi.innerLoopGain = 2.
@@ -91,8 +92,8 @@ class CarInterface(CarInterfaceBase):
       ret.mass = 3558. * CV.LB_TO_KG
       ret.wheelbase = 2.80
       ret.steerRatio = 13.75 * 1.15
-      ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[0.], [0.]]
-      ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.25], [0.05]]
+      ret.lateralTuning.pidnl.kiBP, ret.lateralTuning.pidnl.kpBP = [[0.], [0.]]
+      ret.lateralTuning.pidnl.kpV, ret.lateralTuning.pidnl.kiV = [[0.25], [0.05]]
 
     # Kia
     elif candidate == CAR.KIA_SORENTO:
