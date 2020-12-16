@@ -59,6 +59,7 @@ class CarInterface(CarInterfaceBase):
     ret.lateralTuning.pidnl.kiV = [0.001, 0.0015, 0.002]
     ret.lateralTuning.pidnl.kfBP = [0., 10., 30.]
     ret.lateralTuning.pidnl.kfV = [0.000015, 0.00002, 0.000025]
+
     if opParams().get('Enable_INDI'):
       ret.lateralTuning.init('indi')
       ret.lateralTuning.indi.outerLoopGain = 3.  # stock is 2.0.  Trying out 2.5
