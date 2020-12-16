@@ -89,11 +89,18 @@ class CarInterface(CarInterfaceBase):
       ret.steerRatio = 13.73   #Spec
       ret.minSteerSpeed = 32 * CV.MPH_TO_MS
     elif candidate == CAR.VELOSTER:
-      ret.mass = 3558. * CV.LB_TO_KG
-      ret.wheelbase = 2.80
+      ret.steerActuatorDelay = 0.1  # Default delay
+      ret.steerRateCost = 0.5
+      ret.steerLimitTimer = 0.4
+      ret.mass = 3558. * CV.LB_TO_KG # actual: 2987
+      ret.wheelbase = 2.80 # actual: 2.649
       ret.steerRatio = 13.75 * 1.15
-      ret.lateralTuning.pidnl.kiBP, ret.lateralTuning.pidnl.kpBP = [[0.], [0.]]
-      ret.lateralTuning.pidnl.kpV, ret.lateralTuning.pidnl.kiV = [[0.25], [0.05]]
+      ret.lateralTuning.pidnl.kpBP = [0., 10., 30.]
+      ret.lateralTuning.pidnl.kpV = [0.25, 0.25, 0.25]
+      ret.lateralTuning.pidnl.kiBP = [0., 10., 30.]
+      ret.lateralTuning.pidnl.kiV = [0.05, 0.05, 0.05]
+      ret.lateralTuning.pidnl.kfBP = [0., 10., 30.]
+      ret.lateralTuning.pidnl.kfV = [0.00005, 0.00005, 0.00005]
 
     # Kia
     elif candidate == CAR.KIA_SORENTO:
