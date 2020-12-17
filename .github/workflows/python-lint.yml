@@ -35,7 +35,8 @@ jobs:
       - name: Install dependencies
         run: |
           ${PYTHON_CMD} -m pip install --upgrade pip
-          ${PYTHON_CMD} -m pip install setuptools wheel pylint numpy sympy
+          ${PYTHON_CMD} -m pip install pylint
+          ${PYTHON_CMD} -m pip install numpy sympy psutil raven setproctitle cffi jsonrpc websocket nose hexdump matplotlib crcmod
 
       - name: script
         run: pylint selfdrive
