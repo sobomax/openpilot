@@ -38,7 +38,7 @@ jobs:
           ${PYTHON_CMD} -m pip install wheel pylint
           ${PYTHON_CMD} -m pip install numpy sympy psutil raven setproctitle cffi \
            json-rpc websocket-client nose hexdump matplotlib crcmod tqdm requests \
-           zmq logentries PyJWT scipy usb1
+           zmq logentries PyJWT scipy libusb1
 
       - name: script
         run: |
