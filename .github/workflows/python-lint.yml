@@ -36,7 +36,7 @@ jobs:
         run: |
           ${PYTHON_CMD} -m pip install --upgrade pip
           ${PYTHON_CMD} -m pip install pylint
-          ${PYTHON_CMD} -m pip install numpy sympy psutil raven setproctitle cffi jsonrpc websocket nose hexdump matplotlib crcmod tqdm requests zmq logentries
+          ${PYTHON_CMD} -m pip install numpy sympy psutil raven setproctitle cffi json-rpc websocket nose hexdump matplotlib crcmod tqdm requests zmq logentries
 
       - name: script
         run: pylint selfdrive
