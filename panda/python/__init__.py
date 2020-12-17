@@ -137,8 +137,8 @@ class Panda(object):
   GMLAN_CAN2 = 1
   GMLAN_CAN3 = 2
 
-  REQUEST_IN = usb1.ENDPOINT_IN | usb1.TYPE_VENDOR | usb1.RECIPIENT_DEVICE
-  REQUEST_OUT = usb1.ENDPOINT_OUT | usb1.TYPE_VENDOR | usb1.RECIPIENT_DEVICE
+  REQUEST_IN = usb1.ENDPOINT_IN | usb1.TYPE_VENDOR | usb1.RECIPIENT_DEVICE # pylint: disable=no-member
+  REQUEST_OUT = usb1.ENDPOINT_OUT | usb1.TYPE_VENDOR | usb1.RECIPIENT_DEVICE # pylint: disable=no-member
 
   HW_TYPE_UNKNOWN = b'\x00'
   HW_TYPE_WHITE_PANDA = b'\x01'
@@ -508,7 +508,7 @@ class Panda(object):
         else:
           self._handle.bulkWrite(3, b''.join(snds), timeout=timeout)
         break
-      except (usb1.USBErrorIO, usb1.USBErrorOverflow):
+      except (usb1.USBErrorIO, usb1.USBErrorOverflow): # pylint: disable=no-member
         print("CAN: BAD SEND MANY, RETRYING")
 
   def can_send(self, addr, dat, bus, timeout=CAN_SEND_TIMEOUT_MS):
@@ -520,7 +520,7 @@ class Panda(object):
       try:
         dat = self._handle.bulkRead(1, 0x10 * 256)
         break
-      except (usb1.USBErrorIO, usb1.USBErrorOverflow):
+      except (usb1.USBErrorIO, usb1.USBErrorOverflow): # pylint: disable=no-member
         print("CAN: BAD RECV, RETRYING")
         time.sleep(0.1)
     return parse_can_buffer(dat)
