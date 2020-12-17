@@ -6,7 +6,7 @@ import argparse
 import os
 import traceback
 from tqdm import tqdm
-from tools.lib.logreader import LogReader
+from tools.lib.logreader import LogReader # pylint: disable=import-error
 from selfdrive.car.fw_versions import match_fw_to_car
 from selfdrive.car.toyota.values import FW_VERSIONS as TOYOTA_FW_VERSIONS
 from selfdrive.car.honda.values import FW_VERSIONS as HONDA_FW_VERSIONS

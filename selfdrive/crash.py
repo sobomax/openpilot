@@ -2,7 +2,7 @@
 import os
 import sys
 import threading
-import capnp
+import capnp # pylint: disable=import-error
 from selfdrive.version import version, dirty
 
 from selfdrive.swaglog import cloudlog

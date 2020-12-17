@@ -4,8 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn import linear_model # pylint: disable=import-error
 
-from tools.lib.route import Route
-from tools.lib.logreader import MultiLogIterator
+from tools.lib.route import Route # pylint: disable=import-error
+from tools.lib.logreader import MultiLogIterator # pylint: disable=import-error
 
 
 MIN_SAMPLES = 30*100
