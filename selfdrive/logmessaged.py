@@ -9,7 +9,7 @@ def main():
   le_level = 20  # logging.INFO
 
   ctx = zmq.Context().instance()
-  sock = ctx.socket(zmq.PULL)
+  sock = ctx.socket(zmq.PULL) # pylint: disable=no-member
   sock.bind("ipc:///tmp/logmessage")
 
   # and we publish them
@@ -27,7 +27,7 @@ def main():
     if levelnum >= le_level:
       # push to logentries
       # TODO: push to athena instead
-      le_handler.emit_raw(dat)
+      le_handler.emit_raw(dat) # pylint: disable=no-member
 
     # then we publish them
     msg = messaging.new_message()
