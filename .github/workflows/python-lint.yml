@@ -39,4 +39,4 @@ jobs:
           ${PYTHON_CMD} -m pip install numpy sympy psutil raven setproctitle cffi json-rpc websocket-client nose hexdump matplotlib crcmod tqdm requests zmq logentries jwt
 
       - name: script
-        run: pylint --reports=y selfdrive
+        run: pylint -E --reports=y selfdrive
