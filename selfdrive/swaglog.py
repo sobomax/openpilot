@@ -7,7 +7,7 @@ import zmq
 from common.logging_extra import SwagLogger, SwagFormatter
 
 class snostrip(str):
-  def rstrip(self, *args):
+  def rstrip(self, chars=None):
     return self
 
 class OPLogentriesHandler(LogentriesHandler):
