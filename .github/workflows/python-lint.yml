@@ -39,7 +39,7 @@ jobs:
           ${PYTHON_CMD} -m pip install numpy sympy psutil raven setproctitle cffi \
            json-rpc websocket-client nose hexdump matplotlib crcmod tqdm requests \
            zmq logentries PyJWT scipy libusb1 SCons Cython jinja2 atomicwrites \
-           pyserial pyyaml
+           pyserial pyyaml pycapnp
 
       - name: script
         run: |
