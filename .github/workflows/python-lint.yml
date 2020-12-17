@@ -11,8 +11,8 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "lint"
-  lint:
+  # This workflow contains a single job called "pylint"
+  pylint:
     runs-on: ubuntu-latest
     # The type of runner that the job will run on
     env:
@@ -43,4 +43,4 @@ jobs:
 
       - name: script
         run: |
-          pylint -E --reports=y `find ./ -name \*.py | sed 's|[.]/||;s|/.*||' | sort -u`
+          pylint -j 0 -E --reports=y `find ./ -name \*.py | sed 's|[.]/||;s|/.*||' | sort -u`
