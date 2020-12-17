@@ -38,12 +38,9 @@ jobs:
           ${PYTHON_CMD} -m pip install wheel pylint
           ${PYTHON_CMD} -m pip install numpy sympy psutil raven setproctitle cffi \
            json-rpc websocket-client nose hexdump matplotlib crcmod tqdm requests \
-           zmq logentries PyJWT scipy libusb1
+           zmq logentries PyJWT scipy
+          sudo apt-get install -y python-libusb1
 
       - name: script
         run: |
-          pylint -E --reports=y selfdrive
-          pylint -E --reports=y rednose
-          pylint -E --reports=y panda
-          pylint -E --reports=y opendbc
-          pylint -E --reports=y common
+          pylint -E --reports=y `find ./ -name \*.py | sed 's|[.]/||;s|/.*||' | sort -u`
