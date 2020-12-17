@@ -6,11 +6,19 @@ import zmq
 
 from common.logging_extra import SwagLogger, SwagFormatter
 
+class snostrip(str):
+  def rstrip(self, *args):
+    return self
+
+class OPLogentriesHandler(LogentriesHandler):
+  def format(self, record):
+    r = LogentriesHandler.format(self, record)
+    return snostrip(r)
 
 def get_le_handler():
   # setup logentries. we forward log messages to it
   le_token = "e8549616-0798-4d7e-a2ca-2513ae81fa17"
-  return LogentriesHandler(le_token, use_tls=False, verbose=False)
+  return OPLogentriesHandler(le_token, use_tls=False, verbose=False)
 
 
 class LogMessageHandler(logging.Handler):
