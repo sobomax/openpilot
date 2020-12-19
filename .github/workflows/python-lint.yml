@@ -43,4 +43,4 @@ jobs:
 
       - name: script
         run: |
-          pylint -j 0 -E --reports=y --extension-pkg-whitelist=usb1 `find ./ -name \*.py | sed 's|[.]/||;s|/.*||' | sort -u`
+          pylint -j 0 -E --reports=y --extension-pkg-whitelist=zmq `find ./ -name \*.py | sed 's|[.]/||;s|/.*||' | sort -u`
