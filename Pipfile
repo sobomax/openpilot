@@ -78,6 +78,7 @@ torchsummary = "*"
 blosc = "==1.9.2"
 
 [packages]
+pandas = "==1.1.4"
 atomicwrites = "*"
 cffi = "*"
 crcmod = "*"
