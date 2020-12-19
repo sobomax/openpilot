@@ -8,8 +8,17 @@ NetworkStrength = log.ThermalData.NetworkStrength
 
 
 class Pc(HardwareBase):
+  def get_os_version(self):
+    return None
+
   def get_sound_card_online(self):
     return True
+
+  def reboot(self, reason=None):
+    print("REBOOT!")
+
+  def uninstall(self):
+    print("uninstall")
 
   def get_imei(self, slot):
     return "%015d" % random.randint(0, 1 << 32)
@@ -19,9 +28,6 @@ class Pc(HardwareBase):
 
   def get_subscriber_info(self):
     return ""
-
-  def reboot(self, reason=None):
-    print("REBOOT!")
 
   def get_network_type(self):
     return NetworkType.wifi
