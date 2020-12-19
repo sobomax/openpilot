@@ -1,4 +1,4 @@
-class COLORS:
+class COLORSObj:
   HEADER = '\033[95m'
   OKBLUE = '\033[94m'
   CBLUE = '\33[44m'
@@ -9,20 +9,22 @@ class COLORS:
   ENDC = '\033[0m' + CWHITE
   UNDERLINE = '\033[4m'
   PINK = '\33[38;5;207m'
-  PRETTY_YELLOW = BASE(220)
 
   RED = '\033[91m'
   PURPLE_BG = '\33[45m'
   YELLOW = '\033[93m'
-  BLUE_GREEN = BASE(85)
 
   FAIL = RED
   INFO = PURPLE_BG
   SUCCESS = OKGREEN
   PROMPT = YELLOW
   DBLUE = '\033[36m'
-  CYAN = BASE(39)
   WARNING = '\033[33m'
+
+  def __init__(self):
+     self.PRETTY_YELLOW = self.BASE(220)
+     self.BLUE_GREEN = self.BASE(85)
+     self.CYAN = self.BASE(39)
 
   @staticmethod
   def BASE(col):  # seems to support more colors
@@ -33,7 +35,7 @@ class COLORS:
     return '\33[48;5;{}m'.format(col)
 
 
-COLORS = COLORS()
+COLORS = COLORSObj()
 
 
 def opParams_warning(msg):
