@@ -43,4 +43,4 @@ jobs:
 
       - name: script
         run: |
-          pylint --extension-pkg-whitelist=zmq -j 0 -E --reports=y `find ./ -name \*.py | sed 's|[.]/||;s|/.*||' | sort -u`
+          pylint --extension-pkg-whitelist=zmq,usb1 -j 0 -E --reports=y `find ./ -name \*.py | sed 's|[.]/||;s|/.*||' | sort -u`
