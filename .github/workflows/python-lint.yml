@@ -1,0 +1,46 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Lint Python code
+
+# Triggers the workflow on push or pull request events
+on:
+  push:
+  pull_request:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "pylint"
+  pylint:
+    runs-on: ubuntu-latest
+    # The type of runner that the job will run on
+    env:
+      PYTHON_CMD: "python${{ matrix.python-version }}"
+
+    strategy:
+      matrix:
+        python-version: ['3.7', '3.8']
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          ${PYTHON_CMD} -m pip install --upgrade pip
+          ${PYTHON_CMD} -m pip install wheel pylint
+          ${PYTHON_CMD} -m pip install numpy sympy psutil raven setproctitle cffi \
+           json-rpc websocket-client nose hexdump matplotlib crcmod tqdm requests \
+           zmq logentries PyJWT scipy libusb1 SCons Cython jinja2 atomicwrites \
+           pyserial pyyaml pycapnp
+
+      - name: script
+        run: |
+          pylint --extension-pkg-whitelist=zmq -j 0 -E --reports=y `find ./ -name \*.py | sed 's|[.]/||;s|/.*||' | sort -u`
