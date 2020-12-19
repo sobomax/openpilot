@@ -24,10 +24,12 @@ class COLORS:
   CYAN = BASE(39)
   WARNING = '\033[33m'
 
-  def BASE(self, col):  # seems to support more colors
+  @staticmethod
+  def BASE(col):  # seems to support more colors
     return '\33[38;5;{}m'.format(col)
 
-  def BASEBG(self, col):  # seems to support more colors
+  @staticmethod
+  def BASEBG(col):  # seems to support more colors
     return '\33[48;5;{}m'.format(col)
 
 
