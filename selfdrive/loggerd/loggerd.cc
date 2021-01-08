@@ -420,7 +420,7 @@ void append_property(const char* key, const char* value, void *cookie) {
 
 static bool isText(const std::string& value) {
   for (auto c: value) {
-    if (static_cast<unsigned char>(c) > 127) {
+    if (static_cast<unsigned char>(c) > 127 || c == '\0') {
       return false;
     }
   }
