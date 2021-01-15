@@ -418,15 +418,6 @@ void append_property(const char* key, const char* value, void *cookie) {
   properties->push_back(std::make_pair(std::string(key), std::string(value)));
 }
 
-static bool isText(const std::string& value) {
-  for (auto c: value) {
-    if (static_cast<unsigned char>(c) > 127 || c == '\0') {
-      return false;
-    }
-  }
-  return true;
-}
-
 kj::Array<capnp::word> gen_init_data() {
   MessageBuilder msg;
   auto init = msg.initEvent().initInitData();
@@ -505,11 +496,7 @@ kj::Array<capnp::word> gen_init_data() {
     for (auto& kv : params_map) {
       auto lentry = lparams[i];
       lentry.setKey(kv.first);
-      auto lpvalue = lentry.getValue();
-      if (isText(kv.second))
-        lpvalue.setTxt(kv.second);
-      else
-        lpvalue.setBin(capnp::Data::Reader((const kj::byte*)kv.second.data(), kv.second.size()));
+      lentry.setValue(capnp::Data::Reader((const kj::byte*)kv.second.data(), kv.second.size()));
       i++;
     }
   }
