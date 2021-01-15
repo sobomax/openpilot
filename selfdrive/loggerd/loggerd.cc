@@ -418,6 +418,15 @@ void append_property(const char* key, const char* value, void *cookie) {
   properties->push_back(std::make_pair(std::string(key), std::string(value)));
 }
 
+static bool isText(const std::string& value) {
+  for (auto c: value) {
+    if (static_cast<unsigned char>(c) > 127 || c == '\0') {
+      return false;
+    }
+  }
+  return true;
+}
+
 kj::Array<capnp::word> gen_init_data() {
   MessageBuilder msg;
   auto init = msg.initEvent().initInitData();
@@ -496,7 +505,15 @@ kj::Array<capnp::word> gen_init_data() {
     for (auto& kv : params_map) {
       auto lentry = lparams[i];
       lentry.setKey(kv.first);
-      lentry.setValue(capnp::Data::Reader((const kj::byte*)kv.second.data(), kv.second.size()));
+      if (isText(kv.second)) {
+        /* We've changed schema from Text to Data recently, push in extra \0
+         * so that old tools can still access it as if nothing happened. This
+         * compatibility shim can go away once schema percolates everywhere
+         * (say WHEN now() >= 01.01.2022). For more details see
+         * https://github.com/commaai/openpilot/pull/19693 */
+        lentry.setValue(capnp::Data::Reader((const kj::byte*)kv.second.c_str(), kv.second.size() + 1));
+      } else
+        lentry.setValue(capnp::Data::Reader((const kj::byte*)kv.second.data(), kv.second.size()));
       i++;
     }
   }
