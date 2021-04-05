@@ -389,7 +389,7 @@ struct CarParams {
     pid @26 :LateralPIDTuning;
     indi @27 :LateralINDITuning;
     lqr @40 :LateralLQRTuning;
-    pidnl @54 :LateralPIDTuningNL;
+    pidnl @55 :LateralPIDTuningNL;
   }
 
   steerLimitAlert @28 :Bool;
