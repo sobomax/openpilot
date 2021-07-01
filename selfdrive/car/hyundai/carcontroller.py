@@ -49,9 +49,9 @@ class CarController():
     apply_steer = apply_std_steer_torque_limits(new_steer, self.apply_steer_last, CS.out.steeringTorque, self.p)
     self.steer_rate_limited = new_steer != apply_steer
 
-    # disable if steer angle reach 90 deg, otherwise mdps fault in some models
+    # disable when temp fault is active
     self.high_steer_allowed = True if self.car_fingerprint in FEATURES["allow_high_steer"] else False
-    lkas_active = enabled and ((abs(CS.out.steeringAngleDeg) < CS.CP.maxSteeringAngleDeg) or self.high_steer_allowed)
+    lkas_active = enabled and (not CS.out.steerWarning or self.high_steer_allowed)
 
     # fix for Genesis hard fault at low speed
     if CS.out.vEgo < 16.7 and self.car_fingerprint == CAR.HYUNDAI_GENESIS:
@@ -82,8 +82,8 @@ class CarController():
         self.last_resume_frame = frame
 
     # 20 Hz LFA MFA message
-    if frame % 5 == 0 and self.car_fingerprint in [CAR.SONATA, CAR.PALISADE, CAR.IONIQ, CAR.KIA_NIRO_EV,
-                                                   CAR.IONIQ_EV_2020, CAR.KIA_CEED, CAR.KIA_SELTOS]:
+    if frame % 5 == 0 and self.car_fingerprint in [CAR.SONATA, CAR.PALISADE, CAR.IONIQ, CAR.KIA_NIRO_EV, CAR.KONA_EV,
+                                                   CAR.IONIQ_EV_2020, CAR.KIA_CEED, CAR.KIA_SELTOS, CAR.ELANTRA_2021]:
       can_sends.append(create_lfahda_mfc(self.packer, enabled))
 
     return can_sends
